@@ -1,7 +1,9 @@
 Output preview:
 
 output1:
-<img width="1502" height="668" alt="Output1" src="https://github.com/user-attachments/assets/431570a5-c691-4fdc-ae4e-3d00fb36d213" />
+
+<img width="1290" height="721" alt="Output1" src="https://github.com/user-attachments/assets/0519bb62-dec2-4e75-8d83-ef1735e3d149" />
+
 output2:
 
 <img width="1635" height="896" alt="output2" src="https://github.com/user-attachments/assets/64d78315-bbae-4077-a28f-88500e30c80d" />
