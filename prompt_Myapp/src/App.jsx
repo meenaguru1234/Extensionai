@@ -45,13 +45,13 @@ export default function App() {
   backgroundColor: "#111827",
   boxShadow: "0 25px 50px rgba(0,0,0,0.5)",
   borderRadius: "16px",
-  padding: "24px",
+  // padding: "20px",
   width: "100%",
   maxWidth: "896px"
 }}>
         {/* Header */}
         <h1 style={{
-  fontSize: "30px",
+  fontSize: "50px",
   fontWeight: "700",
   marginBottom: "24px",
   textAlign: "center",
@@ -61,11 +61,14 @@ export default function App() {
         </h1>
 
         {/* Input */}
+        <h1 style={{display:'flex', fontSize:'40px', textAlign:'center', marginLeft:'180px'}}>
+          Create your browser Extension</h1><br/>
         <div className="row">
+          
           <input
             type="text"
             placeholder="Describe your Chrome extension..."
-            className="flex-1 p-3 rounded-lg bg-gray-800 border border-gray-700"
+            className="flex-1 p-5 rounded-lg bg-gray-800 border border-gray-700"
             value={prompt}
             onChange={(e) => setPrompt(e.target.value)}
             style={{
