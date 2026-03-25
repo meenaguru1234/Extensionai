@@ -1,42 +1,80 @@
 import React, { useState } from "react";
+import "../src/App.css"
 
 export default function App() {
   const [prompt, setPrompt] = useState("");
   const [response, setResponse] = useState(null);
   const [activeTab, setActiveTab] = useState(null);
 
-  const handleGenerate = async () => {
+ const handleGenerate = async () => {
+  try {
     const res = await fetch("http://localhost:5000/generate", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json"
+      },
       body: JSON.stringify({ prompt })
     });
 
-    const data = await res.json();
+    // 👇 முக்கியம்
+    const text = await res.text();
+
+    let data;
+    try {
+      data = JSON.parse(text);
+    } catch {
+      console.error("Not JSON:", text);
+      alert("Server error வந்துருக்கு (HTML response)");
+      return;
+    }
+
+    console.log(data);
     setResponse(data);
-    setActiveTab(Object.keys(data.files)[0]);
-  };
+
+  } catch (err) {
+    console.error(err);
+    alert("Error generating extension");
+  }
+};
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 text-white flex items-center justify-center p-6">
-      <div className="bg-gray-900 shadow-2xl rounded-2xl p-6 w-full max-w-4xl">
+    <div className=" fullcontainer min-h-screen 
+    bg-gradient-to-br from-gray-900 to-gray-800 text-white flex items-center justify-center p-6">
+      <div className="innercontainer bg-gray-900 shadow-2xl rounded-2xl p-6 w-full max-w-4xl"
+      style={{
+  backgroundColor: "#111827",
+  boxShadow: "0 25px 50px rgba(0,0,0,0.5)",
+  borderRadius: "16px",
+  padding: "24px",
+  width: "100%",
+  maxWidth: "896px"
+}}>
         {/* Header */}
-        <h1 className="text-3xl font-bold mb-6 text-center">
+        <h1 style={{
+  fontSize: "30px",
+  fontWeight: "700",
+  marginBottom: "24px",
+  textAlign: "center",
+  color:"white"
+}}>
           Extensio.ai 🚀
         </h1>
 
         {/* Input */}
-        <div className="flex gap-3 mb-6">
+        <div className="row">
           <input
             type="text"
             placeholder="Describe your Chrome extension..."
             className="flex-1 p-3 rounded-lg bg-gray-800 border border-gray-700"
             value={prompt}
             onChange={(e) => setPrompt(e.target.value)}
+            style={{
+              height:'100px', width:'500px', fontSize:'20px'
+            }}
           />
           <button
             onClick={handleGenerate}
-            className="bg-blue-600 hover:bg-blue-700 px-4 rounded-lg"
+            className="button1 bg-blue-600 hover:bg-blue-700 px-4 rounded-lg"
           >
             Generate
           </button>
@@ -44,16 +82,16 @@ export default function App() {
 
         {/* Output Section */}
         {response && (
-          <div className="bg-gray-800 rounded-xl p-4">
-            <h2 className="text-lg font-semibold mb-4">Generated Files</h2>
+          <div className=" box bg-gray-800 rounded-xl p-4">
+            <h2 className="subtitle text-lg font-semibold mb-4">Generated Files</h2>
 
             {/* Tabs */}
-            <div className="flex gap-2 mb-4">
+            <div className="row-small flex gap-2 mb-4">
               {Object.keys(response.files).map((file) => (
                 <button
                   key={file}
                   onClick={() => setActiveTab(file)}
-                  className={`px-3 py-1 rounded-lg text-sm ${
+                  className={`small-btn px-3 py-1 rounded-lg text-sm ${
                     activeTab === file
                       ? "bg-blue-600"
                       : "bg-gray-700"
@@ -65,7 +103,7 @@ export default function App() {
             </div>
 
             {/* Code Viewer */}
-            <div className="bg-black rounded-lg p-4 text-sm overflow-auto max-h-64">
+            <div className="code-box bg-black rounded-lg p-4 text-sm overflow-auto max-h-64">
               <pre>
                 {(() => {
                   const content = response.files[activeTab];
@@ -81,7 +119,7 @@ export default function App() {
             {/* Download Button */}
             <a
               href={response.downloadUrl}
-              className="block mt-4 text-center bg-green-600 hover:bg-green-700 py-2 rounded-lg"
+              className="download-btn block mt-4 text-center bg-green-600 hover:bg-green-700 py-2 rounded-lg"
             >
               ⬇ Download ZIP
             </a>
